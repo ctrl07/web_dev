@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <h1>Events</h1>
+    <form onsubmit="addToList(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <input type="submit" id="submitButton" value="Submit">
+    </form>
+
+    <ul id="displayList"></ul>
+
+    <script>
+        function addToList(event) {
+            event.preventDefault();
+
+            // Get the form values
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+
+            // Create a new list item
+            const listItem = document.createElement('li');
+            const textNode = document.createTextNode(name+" "+ email);
+            listItem.appendChild(textNode);
+
+            // Append the list item to the unordered list
+            const displayList = document.querySelector('#displayList');
+            displayList.appendChild(listItem);
+
+            // Clear the form fields
+            document.querySelector('#name').value = '';
+            document.querySelector('#email').value = '';
+        }
+
+        // Get the submit button element
+        const submitButton = document.querySelector('#submitButton');
+
+        // Add event listeners
+        submitButton.addEventListener('mouseover', function() {
+            submitButton.style.color = 'blue';
+        });
+
+        submitButton.addEventListener('click', function() {
+            submitButton.style.color = 'green';
+        });
+
+        submitButton.addEventListener('mouseout', function() {
+            submitButton.style.color = 'yellow';
+        });
+    </script>
+</body>
+</html>
