@@ -1,0 +1,14 @@
+
+parentElement: It returns the parent element of a specified element in the DOM hierarchy.
+lastElementChild: It returns the last child element of a specified element, ignoring non-element nodes.
+lastChild: It returns the last child node of a specified element, including non-element nodes.
+createElement: It creates a new HTML element in the DOM.
+firstElementChild: It returns the first child element of a specified element, ignoring non-element nodes.
+firstChild: It returns the first child node of a specified element, including non-element nodes.
+nextSibling: It returns the next sibling node of a specified element.
+nextElementSibling: It returns the next sibling element node of a specified element, skipping non-element nodes.
+previousSibling: It returns the previous sibling node of a specified element.
+previousElementSibling: It returns the previous sibling element node of a specified element, skipping non-element nodes.
+setAttribute: It sets the value of an attribute on a specified element.
+createTextNode: It creates a new text node with the specified text as its content.
+appendChild: It appends a node as the last child of a specified element.
