@@ -37,9 +37,13 @@
 // exp[0].style.fontWeight='bold';
 // exp[0].style.color='green';
 
+let li= document.getElementsByTagName('li');
 let items= document.getElementsByClassName('list-group-item');
-items[2].style.backgroundColor='green';
+
+for(let i=0;i<li.length;i++){
+    li[i].style.fontWeight='bold'
+}
 
 for(let i=0;i<items.length;i++){
-    items[i].style.fontWeight='bold'
+    items[i].style.backgroundColor='lightgrey'
 }
