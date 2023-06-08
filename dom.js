@@ -48,7 +48,12 @@
 //     items[i].style.backgroundColor='lightgrey'
 // }
 
-// QuerySelector //
+// QuerySelector=> Grabs the top most element if multiple use QUERYSELECTORALL //
 let li=document.querySelectorAll('li');
-li[1].style.backgroundColor='green';
-li[2].style.color='white';
+li[1].style.color='green';
+
+let odd=document.querySelectorAll('li:nth-child(odd');
+
+for(var i=0;i<odd.length;i++){
+    odd[i].style.backgroundColor='green';
+}
