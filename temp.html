@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form method="POST" action="/submit" onsubmit="addToList(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <div id="submitButtonWrapper">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    <ul id="displayList"></ul>
+
+    <script>
+        function addToList(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get the form values
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+
+            // Create a new list item
+            const listItem = document.createElement('li');
+            const textNode = document.createTextNode('Name: ' + name + ', Email: ' + email);
+            listItem.appendChild(textNode);
+
+            // Append the list item to the unordered list
+            const displayList = document.querySelector('#displayList');
+            displayList.appendChild(listItem);
+
+            // Clear the form fields
+            document.querySelector('#name').value = '';
+            document.querySelector('#email').value = '';
+        }
+
+        // Get the submit button wrapper element
+        const submitButtonWrapper = document.querySelector('#submitButtonWrapper');
+
+        // Add event listeners
+        submitButtonWrapper.addEventListener('mouseover', function() {
+            submitButtonWrapper.style.backgroundColor = 'blue';
+        });
+
+        submitButtonWrapper.addEventListener('click', function() {
+            submitButtonWrapper.style.backgroundColor = 'green';
+        });
+
+        submitButtonWrapper.addEventListener('mouseout', function() {
+            submitButtonWrapper.style.backgroundColor = 'yellow';
+        });
+    </script>
+</body>
+</html>
