@@ -37,13 +37,18 @@
 // exp[0].style.fontWeight='bold';
 // exp[0].style.color='green';
 
-let li= document.getElementsByTagName('li');
-let items= document.getElementsByClassName('list-group-item');
+// let li= document.getElementsByTagName('li');
+// let items= document.getElementsByClassName('list-group-item');
 
-for(let i=0;i<li.length;i++){
-    li[i].style.fontWeight='bold'
-}
+// for(let i=0;i<li.length;i++){
+//     li[i].style.fontWeight='bold'
+// }
 
-for(let i=0;i<items.length;i++){
-    items[i].style.backgroundColor='lightgrey'
-}
+// for(let i=0;i<items.length;i++){
+//     items[i].style.backgroundColor='lightgrey'
+// }
+
+// QuerySelector //
+let li=document.querySelectorAll('li');
+li[1].style.backgroundColor='green';
+li[2].style.color='white';
