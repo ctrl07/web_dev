@@ -33,8 +33,13 @@
 // console.log(items[1]);
 // items[1].textContent='Hello 2';
 
-let exp=document.getElementsByClassName('title');
-exp[0].style.fontWeight='bold';
-exp[0].style.color='green';
+// let exp=document.getElementsByClassName('title');
+// exp[0].style.fontWeight='bold';
+// exp[0].style.color='green';
 
+let items= document.getElementsByClassName('list-group-item');
+items[2].style.backgroundColor='green';
 
+for(let i=0;i<items.length;i++){
+    items[i].style.fontWeight='bold'
+}
