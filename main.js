@@ -1,6 +1,8 @@
 let form=document.getElementById('addForm');
 let itemList= document.getElementById('items');
 let filter = document.getElementById('filter');
+// let desc = document.li.childNodes;
+
 
 //Form submit event
 form.addEventListener('submit',addItem);
@@ -70,7 +72,8 @@ function filterItems(e){
     //Convert to array
     Array.from(items).forEach(function(item){
         let itemName = item.firstChild.textContent;
-        if(itemName.toLowerCase().indexOf(text)!= -1){
+        let desc= item.childNodes[1].textContent;
+        if(itemName.toLowerCase().indexOf(text)!= -1 || desc.toLowerCase().indexOf(text)!= -1 ){
             item.style.display='block';
         }else {
             item.style.display = 'none';
