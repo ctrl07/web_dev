@@ -4,10 +4,14 @@ function onsignup(event) {
     let email=document.getElementById('email').value;
     let phone=document.getElementById('phone').value;
     let time=document.getElementById('time').value;
-    localStorage.setItem('name',fname);
-    localStorage.setItem('mail',email);
-    localStorage.setItem('phone',phone);
-    localStorage.setItem('time',time);
 
+    let userData = {
+        name: fname,
+        mail: email,
+        phone: phone,
+        time: time
+    }
+
+    localStorage.setItem('userData', JSON.stringify(userData));
 };
 
