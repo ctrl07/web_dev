@@ -14,17 +14,21 @@ function onsignup(event) {
     // add textNode to li
     li.appendChild(textNode);
 
-    //Create del button
+    //Create delete and edit buttons
     let delBtn = document.createElement('button');
+    let editBtn = document.createElement('button');
 
-    //Add classes to button
+    //Add classes to the buttons
     delBtn.className = 'btn btn-danger btn-sm float-right delete';
-
+    editBtn.className = 'btn btn-primary btn-sm float-right edit';
+    
     //Append text node
     delBtn.appendChild(document.createTextNode('Delete'));
+    editBtn.appendChild(document.createTextNode('Edit'));
 
-    //Append button to li
+    //Append buttons to li
     li.appendChild(delBtn);
+    li.appendChild(editBtn);
 
     //append li to ul
     itemList.appendChild(li);
@@ -56,3 +60,23 @@ function removeItem(e){
         }
     }
 }
+
+itemList.addEventListener('click', editItem);
+
+function editItem(e) {
+    if (e.target.classList.contains('edit')) {
+        let li = e.target.parentElement;
+        let email = li.textContent.trim().split(' ')[1];
+        let storedData = JSON.parse(localStorage.getItem(email));
+
+        //fill iinputs with the user data that needs to be edit
+        document.getElementById('fname').value = storedData.name;
+        document.getElementById('email').value = storedData.mail;
+        document.getElementById('phone').value = storedData.phone;
+
+        //remove data from browser and localStorage
+        li.remove();
+        localStorage.removeItem(email);
+    }
+}
+
