@@ -2,7 +2,7 @@ const posts = [];
 let lastActivityTime = null;
 
 function createPost() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             const newPost = { title: `Post${posts.length + 1}` };
             posts.push(newPost);
@@ -12,7 +12,7 @@ function createPost() {
 }
 
 function updateLastUserActivityTime() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             lastActivityTime = new Date();
             resolve(lastActivityTime);
@@ -33,16 +33,20 @@ function deletePost() {
     });
 }
 
-createPost()
-    .then(() => updateLastUserActivityTime())
-    .then(() => {
+async function main() {
+    try {
+        await createPost();
+        await updateLastUserActivityTime();
+
         console.log("All Posts:", posts);
         console.log("Last Activity Time:", lastActivityTime);
 
-        return deletePost();
-    })
-    .then(deletedPost => {
+        const deletedPost = await deletePost();
         console.log("Deleted Post:", deletedPost);
         console.log("Remaining Posts:", posts);
-    })
-    .catch(error => console.log(error));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+main();
