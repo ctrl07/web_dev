@@ -38,13 +38,20 @@ function onsignup(event) {
     document.getElementById('email').value='';
     document.getElementById('phone').value='';
 
-    let userData = {
+    const userData = {
         name: fname,
         mail: email,
         phone: phone,
     }
-
-    localStorage.setItem(userData.mail, JSON.stringify(userData));
+    axios
+    .post("https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData",userData)
+    .then((response) =>{
+        console.log(response);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    // localStorage.setItem(userData.mail, JSON.stringify(userData));
 };
 
 //Remove item
@@ -79,4 +86,3 @@ function editItem(e) {
         localStorage.removeItem(email);
     }
 }
-
