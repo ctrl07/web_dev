@@ -1,51 +1,52 @@
 const itemList = document.getElementById('items');
 
-function onsignup(event) {
+function onAddTask(event) {
     event.preventDefault();
 
     // Get form values
-    const fname = document.getElementById('expense').value;
-    const email = document.getElementById('desc').value;
-    const category = document.getElementById('categ').value;  
+    const task = document.getElementById('task').value;
+    const description = document.getElementById('description').value;
 
-    // Create user data object
-    const userData = {
-        name: fname,
-        mail: email,
-        category: category, 
+    // Create task data object
+    const taskData = {
+        task: task,
+        description: description,
+        completed: false, // Initially set as incomplete
     };
 
     // Save data to the server using Axios POST request
-    axios.post("https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData", userData)
-    .then((response) => {
-        console.log(response);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    axios.post("https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/taskData", taskData)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 
-    // Display user details
-    displayUserDetails(userData);
+    // Display task details
+    displayTaskDetails(taskData);
 
     // Clear form fields
-    document.getElementById('expense').value = '';
-    document.getElementById('desc').value = '';
+    document.getElementById('task').value = '';
+    document.getElementById('description').value = '';
 }
 
-function displayUserDetails(userData) {
+function displayTaskDetails(taskData) {
     // Create new list item
     const li = document.createElement('li');
     li.className = 'list-group-item';
-    li.innerHTML = `${userData.name} ${userData.mail} ${userData.category}`;  // Updated property to category
+    li.innerHTML = `<strong>${taskData.task}</strong><br>${taskData.description || 'No description'}`;
 
-    // Set data-user-id attribute
-    li.dataset.userId = userData._id;
+    // Set data-task-id attribute
+    li.dataset.taskId = taskData._id;
 
-    // Create delete and edit buttons
-    const delBtn = createButton('Delete', 'btn-danger', removeItem);
+    // Create buttons
+    const delBtn = createButton('Delete', 'btn-danger', removeTask);
+    const doneBtn = createButton('Done', 'btn-success', markTaskDone);
 
     // Append buttons to li
     li.appendChild(delBtn);
+    li.appendChild(doneBtn);
 
     // Append li to ul
     itemList.appendChild(li);
@@ -53,9 +54,9 @@ function displayUserDetails(userData) {
 
 // Fetch data from the server on page load
 window.addEventListener("DOMContentLoaded", () => {
-    axios.get('https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData')
+    axios.get('https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/taskData')
         .then((response) => {
-            response.data.forEach(displayUserDetails);
+            response.data.forEach(displayTaskDetails);
         })
         .catch((error) => {
             console.error(error);
@@ -65,21 +66,21 @@ window.addEventListener("DOMContentLoaded", () => {
 // Helper function to create buttons
 function createButton(text, className, clickHandler) {
     const button = document.createElement('button');
-    button.className = `btn ${className} btn-sm float-right`;
+    button.className = `btn ${className} btn-sm float-right me-2`; // Added margin to separate buttons
     button.appendChild(document.createTextNode(text));
     button.addEventListener('click', clickHandler);
     return button;
 }
 
-function removeItem() {
+function removeTask() {
     const li = this.parentElement;
-    const userId = li.dataset.userId;
+    const taskId = li.dataset.taskId;
 
     if (confirm('Are You Sure?')) {
         li.remove();
 
         // Remove data from the server using Axios DELETE request
-        axios.delete(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData/${userId}`)
+        axios.delete(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/taskData/${taskId}`)
             .then((response) => {
                 console.log(response);
             })
@@ -89,3 +90,19 @@ function removeItem() {
     }
 }
 
+function markTaskDone() {
+    const li = this.parentElement;
+    const taskId = li.dataset.taskId;
+
+    // Update the completed status locally
+    li.classList.add('list-group-item-success');
+
+    // Update the completed status on the server using Axios PUT request
+    axios.put(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/taskData/${taskId}`, { completed: true })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
