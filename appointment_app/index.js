@@ -1,88 +1,111 @@
-itemList=document.getElementById('items');
+const itemList = document.getElementById('items');
 
 function onsignup(event) {
     event.preventDefault();
-    let fname=document.getElementById('fname').value;
-    let email=document.getElementById('email').value;
-    let phone=document.getElementById('phone').value;
 
-    //Create new list 
-    let li = document.createElement('li');
-    li.className='list-group-item';
-    let textNode = document.createTextNode(fname+' '+email+' '+phone);
+    // Get form values
+    const fname = document.getElementById('fname').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
 
-    // add textNode to li
-    li.appendChild(textNode);
-
-    //Create delete and edit buttons
-    let delBtn = document.createElement('button');
-    let editBtn = document.createElement('button');
-
-    //Add classes to the buttons
-    delBtn.className = 'btn btn-danger btn-sm float-right delete';
-    editBtn.className = 'btn btn-primary btn-sm float-right edit';
-    
-    //Append text node
-    delBtn.appendChild(document.createTextNode('Delete'));
-    editBtn.appendChild(document.createTextNode('Edit'));
-
-    //Append buttons to li
-    li.appendChild(delBtn);
-    li.appendChild(editBtn);
-
-    //append li to ul
-    itemList.appendChild(li);
-
-    //Clear form fields 
-    document.getElementById('fname').value='';
-    document.getElementById('email').value='';
-    document.getElementById('phone').value='';
-
+    // Create user data object
     const userData = {
         name: fname,
         mail: email,
         phone: phone,
-    }
-    axios
-    .post("https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData",userData)
-    .then((response) =>{
-        console.log(response);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    // localStorage.setItem(userData.mail, JSON.stringify(userData));
-};
+    };
 
-//Remove item
-itemList.addEventListener('click', removeItem);
+    // Display user details
+    displayUserDetails(userData);
 
-function removeItem(e){
-    if(e.target.classList.contains('delete')){
-        if(confirm('Are You Sure?')){
-            let li=e.target.parentElement;
-            li.remove();
-            let email = li.textContent.trim().split(' ')[1];
-            localStorage.removeItem(email);
-        }
-    }
+    // Clear form fields
+    document.getElementById('fname').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phone').value = '';
 }
 
-itemList.addEventListener('click', editItem);
+function displayUserDetails(userData) {
+    // Create new list item
+    const li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.innerHTML = `${userData.name} ${userData.mail} ${userData.phone}`;
 
-function editItem(e) {
-    if (e.target.classList.contains('edit')) {
-        let li = e.target.parentElement;
-        let email = li.textContent.trim().split(' ')[1];
-        let storedData = JSON.parse(localStorage.getItem(email));
+    // Create delete and edit buttons
+    const delBtn = createButton('Delete', 'btn-danger', removeItem);
+    const editBtn = createButton('Edit', 'btn-primary', editItem);
 
-        //fill iinputs with the user data that needs to be edit
-        document.getElementById('fname').value = storedData.name;
-        document.getElementById('email').value = storedData.mail;
-        document.getElementById('phone').value = storedData.phone;
+    // Append buttons to li
+    li.appendChild(delBtn);
+    li.appendChild(editBtn);
 
-        //remove data from browser and localStorage
-        li.remove();
-        localStorage.removeItem(email);
-    }
+    // Append li to ul
+    itemList.appendChild(li);
+
+    // Save data to the server using Axios POST request
+    axios.post("https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData", userData)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
+
+function createButton(text, className, clickHandler) {
+    const button = document.createElement('button');
+    button.className = `btn ${className} btn-sm float-right`;
+    button.appendChild(document.createTextNode(text));
+    button.addEventListener('click', clickHandler);
+    return button;
+}
+
+function removeItem() {
+    // const li = this.parentElement;
+    // const email = li.textContent.trim().split(' ')[1];
+    // if (confirm('Are You Sure?')) {
+    //     li.remove();
+    //     // Remove data from the server using Axios DELETE request
+    //     axios.delete(`https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData/${email}`)
+    //         .then((response) => {
+    //             console.log(response);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // }
+}
+
+function editItem() {
+    // const li = this.parentElement;
+    // const email = li.textContent.trim().split(' ')[1];
+    // const storedData = JSON.parse(localStorage.getItem(email));
+
+    // // Fill inputs with user data for editing
+    // document.getElementById('fname').value = storedData.name;
+    // document.getElementById('email').value = storedData.mail;
+    // document.getElementById('phone').value = storedData.phone;
+
+    // // Remove data from the server using Axios DELETE request
+    // axios.delete(`https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData/${email}`)
+    //     .then((response) => {
+    //         console.log(response);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     });
+
+    // // Remove data from browser localStorage
+    // li.remove();
+    // localStorage.removeItem(email);
+}
+
+// Fetch data from the server on page load
+document.addEventListener("DOMContentLoaded", () => {
+    axios.get('https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData')
+        .then((response) => {
+            response.data.forEach(displayUserDetails);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+});
