@@ -45,7 +45,7 @@ function displayUserDetails(userData) {
     itemList.appendChild(li);
 
     // Save data to the server using Axios POST request
-    axios.post("https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData", userData)
+    axios.post("https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData", userData)
         .then((response) => {
             console.log(response);
         })
@@ -53,6 +53,17 @@ function displayUserDetails(userData) {
             console.log(err);
         });
 }
+
+// Fetch data from the server on page load
+window.addEventListener("DOMContentLoaded", () => {
+    axios.get('https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData')
+        .then((response) => {
+            response.data.forEach(displayUserDetails);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+});
 
 function createButton(text, className, clickHandler) {
     const button = document.createElement('button');
@@ -70,7 +81,7 @@ function removeItem() {
         li.remove();
 
         // Remove data from the server using Axios DELETE request
-        axios.delete(`https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData/${userId}`)
+        axios.delete(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData/${userId}`)
             .then((response) => {
                 console.log(response);
             })
@@ -81,36 +92,35 @@ function removeItem() {
 }
 
 function editItem() {
-    // const li = this.parentElement;
-    // const email = li.textContent.trim().split(' ')[1];
-    // const storedData = JSON.parse(localStorage.getItem(email));
+    const li = this.parentElement;
+    const userId = li.dataset.userId;
 
-    // // Fill inputs with user data for editing
-    // document.getElementById('fname').value = storedData.name;
-    // document.getElementById('email').value = storedData.mail;
-    // document.getElementById('phone').value = storedData.phone;
-
-    // // Remove data from the server using Axios DELETE request
-    // axios.delete(`https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData/${email}`)
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
-
-    // // Remove data from browser localStorage
-    // li.remove();
-    // localStorage.removeItem(email);
-}
-
-// Fetch data from the server on page load
-window.addEventListener("DOMContentLoaded", () => {
-    axios.get('https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData')
+    // Fetch user data from the server using Axios GET request
+    axios.get(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData/${userId}`)
         .then((response) => {
-            response.data.forEach(displayUserDetails);
+            const userData = response.data;
+
+            // Fill inputs with user data for editing
+            document.getElementById('fname').value = userData.name;
+            document.getElementById('email').value = userData.mail;
+            document.getElementById('phone').value = userData.phone;
+
+            // Remove data from the server using Axios DELETE request
+            axios.delete(`https://crudcrud.com/api/99ccbec4007746e3a6de173b347bf692/userData/${userId}`)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            // Remove data from browser localStorage
+            li.remove();
         })
         .catch((error) => {
             console.error(error);
         });
-});
+}
+
+
+
