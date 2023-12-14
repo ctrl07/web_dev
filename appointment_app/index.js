@@ -30,6 +30,9 @@ function displayUserDetails(userData) {
     li.className = 'list-group-item';
     li.innerHTML = `${userData.name} ${userData.mail} ${userData.phone}`;
 
+    // Set data-user-id attribute
+    li.dataset.userId = userData._id;
+
     // Create delete and edit buttons
     const delBtn = createButton('Delete', 'btn-danger', removeItem);
     const editBtn = createButton('Edit', 'btn-primary', editItem);
@@ -42,7 +45,7 @@ function displayUserDetails(userData) {
     itemList.appendChild(li);
 
     // Save data to the server using Axios POST request
-    axios.post("https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData", userData)
+    axios.post("https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData", userData)
         .then((response) => {
             console.log(response);
         })
@@ -60,19 +63,21 @@ function createButton(text, className, clickHandler) {
 }
 
 function removeItem() {
-    // const li = this.parentElement;
-    // const email = li.textContent.trim().split(' ')[1];
-    // if (confirm('Are You Sure?')) {
-    //     li.remove();
-    //     // Remove data from the server using Axios DELETE request
-    //     axios.delete(`https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData/${email}`)
-    //         .then((response) => {
-    //             console.log(response);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // }
+    const li = this.parentElement;
+    const userId = li.dataset.userId;
+
+    if (confirm('Are You Sure?')) {
+        li.remove();
+
+        // Remove data from the server using Axios DELETE request
+        axios.delete(`https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData/${userId}`)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 }
 
 function editItem() {
@@ -100,8 +105,8 @@ function editItem() {
 }
 
 // Fetch data from the server on page load
-document.addEventListener("DOMContentLoaded", () => {
-    axios.get('https://crudcrud.com/api/23b4f51bc117449fa79ad73e5d7fbd0e/userData')
+window.addEventListener("DOMContentLoaded", () => {
+    axios.get('https://crudcrud.com/api/cc01c68dc4294edf90939a30c1d03b14/userData')
         .then((response) => {
             response.data.forEach(displayUserDetails);
         })
