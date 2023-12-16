@@ -21,10 +21,10 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center"><strong>Admin Pannel</strong></h1>
+        <h1 class="text-center"><strong>Seller Admin Pannel</strong></h1>
         <hr>  
         <h2 class="text-center">Enter your Order</h2>
-        <form id='newForm' class="row g-4" onsubmit="onsignup(event)">
+        <form id='newForm' class="row g-4" onsubmit="addOrder(event)">
             <div class="col-md-12">
                 <div class="form-floating text-center">          
                     <input type="number" class="form-control" id="order" name="order" placeholder="Please enter your name">
@@ -37,24 +37,13 @@
                     <label for="pname" class="form-label"><strong>Product Name:</strong></label>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="form-floating">   
-                    <label for="categ" class="form-label"><strong>Category:</strong></label>
-                    <br>
-                    <select id="categ" class="form-select" required>
-                        <option value="Food">Food</option>
-                        <option value="Transportation">Tech</option>
-                        <option value="Movies">Skincare</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Shopping">Sports</option>
-                        <!-- Add more categories as needed -->
-                    </select>
-                </div>
-            </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Add order</button>
             </div>
         </form>
+        <div id="total" class="mt-3">
+            <h3 class="text-center">Total Value: ₹<span id="totalValue">0</span></h3>
+        </div>
     </div>
     <ul id="items" class="list-group">
         <!-- Your list items... -->
